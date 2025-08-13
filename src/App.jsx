@@ -57,15 +57,21 @@ const App = () => {
   };
 
   const [bookList, setBookList] = useState(books);
+
+  const handleBookDeleted = (bookId) => {
+    setBookList((prevBookList) =>
+      prevBookList.filter((book) => book.id !== bookId)
+    );
+  };
   return (
     <>
-      {/* <div className="d-flex flex-column align-items-center">
+      <div className="d-flex flex-column align-items-center">
         <h2>Book champions app</h2>
         <p>¡Quiero leer libros!</p>
         <NewBook onBookAdded={handleBookAdded} />
-        <Books books={bookList} />
-      </div> */}
-      <Login />
+        <Books books={bookList} onBookDeleted={handleBookDeleted} />
+      </div>
+      {/* <Login /> */}
     </>
   );
 };
