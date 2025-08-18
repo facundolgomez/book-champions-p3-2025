@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import Login from "./components/auth/login/Login";
 import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/ui/notFound/NotFound";
@@ -15,6 +15,7 @@ const App = () => {
       <div className="d-flex flex-column align-items-center">
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Navigate to="login" />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route
               path="/library"
