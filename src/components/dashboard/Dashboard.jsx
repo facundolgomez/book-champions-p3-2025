@@ -4,7 +4,7 @@ import NewBook from "../../components/library/newBook/NewBook";
 import { useState } from "react";
 import Login from "../../components/auth/login/Login";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { Route, useNavigate, Routes } from "react-router";
 
 const Dashboard = ({ onLogout }) => {
   const books = [
@@ -72,8 +72,24 @@ const Dashboard = ({ onLogout }) => {
     onLogout();
     navigate("/login");
   };
+  const handleNavigateAddBook = () => {
+    navigate("/library/add-book", { replace: true });
+  };
   return (
     <>
+      <Button
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 160,
+          padding: "6px 12px",
+          cursor: "pointer",
+        }}
+        variant="success"
+        onClick={handleNavigateAddBook}
+      >
+        Agregar libro
+      </Button>
       <Button
         style={{
           position: "absolute",
@@ -89,8 +105,17 @@ const Dashboard = ({ onLogout }) => {
       </Button>
       <h2>Book champions app</h2>
       <p>¡Quiero leer libros!</p>
-      <NewBook onBookAdded={handleBookAdded} />
-      <Books books={bookList} onBookDeleted={handleBookDeleted} />
+      <Routes>
+        <Route
+          index
+          element={<Books books={bookList} onBookDeleted={handleBookDeleted} />}
+        />
+        <Route
+          path="add-book"
+          element={<NewBook onBookAdded={handleBookAdded} />}
+        />
+      </Routes>
+
       {/* <Login /> */}
     </>
   );
