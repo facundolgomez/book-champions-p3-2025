@@ -2,6 +2,7 @@ import { Badge, Card, Button } from "react-bootstrap";
 import { useState } from "react";
 import { Star, StarFill } from "react-bootstrap-icons";
 import MyModal from "../../ui/modal/MyModal";
+import { useNavigate } from "react-router";
 const BookItem = ({
   id,
   title,
@@ -9,16 +10,31 @@ const BookItem = ({
   rating,
   pageCount,
   imageUrl,
+  summary,
   available,
   onSelectedBook,
   onBookDeleted,
 }) => {
   const [newTitle, setNewTitle] = useState(title);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const clickHandler = () => {
-    setNewTitle("Actualizado");
-    console.log("clicked");
-    onSelectedBook(title);
+    // setNewTitle("Actualizado");
+    // console.log("clicked");
+    // onSelectedBook(title);
+    navigate(`${id}`, {
+      state: {
+        book: {
+          title,
+          author,
+          rating,
+          pageCount,
+          imageUrl,
+          summary,
+          available,
+        },
+      },
+    });
   };
   console.log("BookItem evaluado por React");
 

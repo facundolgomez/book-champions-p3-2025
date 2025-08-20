@@ -32,6 +32,7 @@ const Books = ({ books, onBookDeleted }) => {
                 rating={book.rating}
                 pageCount={book.pageCount}
                 imageUrl={book.imageUrl}
+                summary={book.summary}
                 available={book.available}
                 onSelectedBook={setSelectedBook}
                 onBookDeleted={onBookDeleted}

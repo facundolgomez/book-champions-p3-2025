@@ -3,6 +3,7 @@ import Login from "./components/auth/login/Login";
 import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/ui/notFound/NotFound";
 import Protected from "./components/routing/protected/Protected";
+
 import { useState } from "react";
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,6 +28,7 @@ const App = () => {
                 element={<Dashboard onLogout={handleLogout} />}
               />
             </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
