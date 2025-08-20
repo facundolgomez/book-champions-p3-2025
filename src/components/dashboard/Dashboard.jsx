@@ -3,8 +3,10 @@ import Books from "../../components/library/books/Books";
 import NewBook from "../../components/library/newBook/NewBook";
 import { useState } from "react";
 import Login from "../../components/auth/login/Login";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
-const Dashboard = () => {
+const Dashboard = ({ onLogout }) => {
   const books = [
     {
       id: 1,
@@ -64,8 +66,27 @@ const Dashboard = () => {
       prevBookList.filter((book) => book.id !== bookId)
     );
   };
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onLogout();
+    navigate("/login");
+  };
   return (
     <>
+      <Button
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 30,
+          padding: "6px 12px",
+          cursor: "pointer",
+        }}
+        variant="primary"
+        onClick={handleLogout}
+      >
+        Cerrar sesion
+      </Button>
       <h2>Book champions app</h2>
       <p>¡Quiero leer libros!</p>
       <NewBook onBookAdded={handleBookAdded} />

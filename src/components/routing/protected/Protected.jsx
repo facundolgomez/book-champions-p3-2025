@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
-const Protected = ({ isSignedId, children }) => {
-  if (!isSignedId) {
+const Protected = ({ isSignedIn, children }) => {
+  if (!isSignedIn) {
     return <Navigate to="/login" replace />;
   }
 

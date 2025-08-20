@@ -10,6 +10,10 @@ const App = () => {
   const handleLogin = () => {
     setLoggedIn(true);
   };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+  };
   return (
     <>
       <div className="d-flex flex-column align-items-center">
@@ -20,8 +24,8 @@ const App = () => {
             <Route
               path="/library"
               element={
-                <Protected isSignedId={loggedIn}>
-                  <Dashboard />
+                <Protected isSignedIn={loggedIn}>
+                  <Dashboard onLogout={handleLogout} />
                 </Protected>
               }
             />
