@@ -1,10 +1,10 @@
 import BookItem from "../library/bookItem/BookItem";
 import Books from "../../components/library/books/Books";
 import NewBook from "../../components/library/newBook/NewBook";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../../components/auth/login/Login";
 import { Button } from "react-bootstrap";
-import { Route, useNavigate, Routes } from "react-router";
+import { Route, useNavigate, Routes, data } from "react-router";
 import BookDetails from "../library/bookDetails/BookDetails";
 
 const Dashboard = ({ onLogout }) => {
@@ -59,13 +59,25 @@ const Dashboard = ({ onLogout }) => {
     },
   ];
   const handleBookAdded = (book) => {
-    const bookData = {
-      ...book,
-      id: Math.random(),
-    };
-    console.log(bookData);
+    // const bookData = {
+    //   ...book,
+    //   id: Math.random(),
+    // };
+    // console.log(bookData);
 
-    setBookList((prevBookList) => [bookData, ...prevBookList]); //callback, es una funcion que se pasa como parametro a otra funcion
+    // setBookList((prevBookList) => [bookData, ...prevBookList]); //callback, es una funcion que se pasa como parametro a otra funcion
+    fetch("http://localhost:3000/books", {
+      headers: {
+        "Content-type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(book),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setBookList((prevBookList) => [data, ...prevBookList]);
+      })
+      .catch((err) => console.log(err));
   };
 
   const [bookList, setBookList] = useState(books);
@@ -84,6 +96,14 @@ const Dashboard = ({ onLogout }) => {
   const handleNavigateAddBook = () => {
     navigate("/library/add-book", { replace: true });
   };
+
+  useEffect(() => {
+    fetch("http://localhost:3000/books")
+      .then((res) => res.json())
+      .then((data) => setBookList([...data]))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Button

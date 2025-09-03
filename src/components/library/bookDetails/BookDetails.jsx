@@ -14,6 +14,8 @@ const BookDetails = () => {
     navigate("/library");
   };
 
+  console.log(location);
+
   const ratingStars = Array.from({ length: 5 }, (_, index) =>
     index < rating ? <StarFill key={index} /> : <Star key={index} />
   );
