@@ -1,11 +1,12 @@
 import BookItem from "../library/bookItem/BookItem";
 import Books from "../../components/library/books/Books";
-import NewBook from "../../components/library/newBook/NewBook";
+import BookForm from "../library/bookForm/BookForm";
 import { useState, useEffect } from "react";
 import Login from "../../components/auth/login/Login";
 import { Button } from "react-bootstrap";
-import { Route, useNavigate, Routes, data } from "react-router";
+import { Route, useNavigate, Routes } from "react-router";
 import BookDetails from "../library/bookDetails/BookDetails";
+import { errorToast, successToast } from "../ui/notifications/notifications";
 
 const Dashboard = ({ onLogout }) => {
   const books = [
@@ -73,11 +74,20 @@ const Dashboard = ({ onLogout }) => {
       method: "POST",
       body: JSON.stringify(book),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Error al crear el libro");
+          });
+        }
+        return res.json();
+      })
+
       .then((data) => {
         setBookList((prevBookList) => [data, ...prevBookList]);
+        successToast(`Libro ${data.title} agregado correctamente`); //se usa la funcion que contiene el mensaje de exito
       })
-      .catch((err) => console.log(err));
+      .catch((err) => errorToast(err.message));
   };
 
   const [bookList, setBookList] = useState(books);
@@ -141,7 +151,7 @@ const Dashboard = ({ onLogout }) => {
         />
         <Route
           path="add-book"
-          element={<NewBook onBookAdded={handleBookAdded} />}
+          element={<BookForm onBookAdded={handleBookAdded} />}
         />
         <Route path=":id" element={<BookDetails />} />
       </Routes>
