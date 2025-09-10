@@ -1,6 +1,7 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { successToast } from "../../ui/notifications/notifications";
 
 const BookForm = ({ book, onBookAdded, isEditing = false, onBookSaved }) => {
   const [title, setTitle] = useState(book?.title);
@@ -74,6 +75,7 @@ const BookForm = ({ book, onBookAdded, isEditing = false, onBookSaved }) => {
       .then((res) => res.json())
       .then(() => {
         onBookSaved(bookData);
+        successToast(`Libro ${bookData.title} editado correctamente`);
       })
       .catch((err) => console.log(err));
   };
