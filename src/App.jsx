@@ -4,6 +4,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/ui/notFound/NotFound";
 import Protected from "./components/routing/protected/Protected";
 import { ToastContainer } from "react-toastify";
+import Register from "./components/auth/register/Register";
 
 import { useState } from "react";
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="login" />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route element={<Protected isSignedIn={loggedIn} />}>
               <Route
