@@ -40,7 +40,16 @@ const BookItem = ({
 
   const handleConfirmDelete = () => {
     setShowModal(false);
-    onBookDeleted(id);
+    fetch(`http://localhost:3000/books/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error en el servidor");
+        }
+        onBookDeleted(id);
+      })
+      .catch((err) => console.log("Error al eliminar el libro", err.message));
   };
   return (
     <>
