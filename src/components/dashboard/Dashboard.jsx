@@ -8,7 +8,7 @@ import { Route, useNavigate, Routes, useLocation } from "react-router";
 import BookDetails from "../library/bookDetails/BookDetails";
 import { errorToast, successToast } from "../ui/notifications/notifications";
 import { AuthenticationContext } from "../services/auth.context";
-
+import ToggleTheme from "../services/theme/toggleTheme/ToggleTheme";
 const Dashboard = () => {
   const books = [
     {
@@ -124,6 +124,7 @@ const Dashboard = () => {
 
   return (
     <>
+      <ToggleTheme />
       <Button
         style={{
           position: "absolute",
