@@ -1,14 +1,15 @@
 import BookItem from "../library/bookItem/BookItem";
 import Books from "../../components/library/books/Books";
 import BookForm from "../library/bookForm/BookForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Login from "../../components/auth/login/Login";
 import { Button } from "react-bootstrap";
 import { Route, useNavigate, Routes, useLocation } from "react-router";
 import BookDetails from "../library/bookDetails/BookDetails";
 import { errorToast, successToast } from "../ui/notifications/notifications";
+import { AuthenticationContext } from "../services/auth.context";
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = () => {
   const books = [
     {
       id: 1,
@@ -98,10 +99,10 @@ const Dashboard = ({ onLogout }) => {
     );
   };
   const navigate = useNavigate();
+  const { handleUserLogout } = useContext(AuthenticationContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("book-champions-token");
-    onLogout();
+    handleUserLogout();
     navigate("/login");
   };
   const handleNavigateAddBook = () => {
@@ -110,7 +111,11 @@ const Dashboard = ({ onLogout }) => {
   const location = useLocation();
   useEffect(() => {
     if (location.pathname === "/library") {
-      fetch("http://localhost:3000/books")
+      fetch("http://localhost:3000/books", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("book-champions-token")}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => setBookList([...data]))
         .catch((err) => console.log(err));

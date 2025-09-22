@@ -2,8 +2,12 @@ import { useRef, useState } from "react";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import AuthContainer from "../authContainer/AuthContainer";
-
-const Login = ({ onLogin }) => {
+import { validateEmail, validatePassword } from "../auth.services.js";
+import { errorToast } from "../../ui/notifications/notifications.js";
+import { useContext } from "react";
+import { AuthenticationContext } from "../../services/auth.context.jsx";
+import { loginUser } from "./login.services.js";
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +17,7 @@ const Login = ({ onLogin }) => {
     email: false,
     password: false,
   });
+  const { handleUserLogin } = useContext(AuthenticationContext);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -26,33 +31,34 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!emailRef.current.value.length) {
+    if (!emailRef.current.value.length || !validateEmail(email)) {
       setErrors({ ...errors, email: true });
-      alert("Email vacio!");
+      errorToast("Email incorrecto");
       emailRef.current.focus();
       return;
-    } else if (!password.length || password.length < 7) {
+    } else if (
+      !password.length ||
+      !validatePassword(password, 7, null, true, true)
+    ) {
       setErrors({ ...errors, password: true });
-      alert("Password incorrecto");
+      errorToast("Password incorrecto");
       passwordRef.current.focus();
       return;
     }
     setErrors({ email: false, password: false });
     alert(`El email ingresado es: ${email} y el password es ${password}`);
-    onLogin();
-    fetch("http://localhost:3000/login", {
-      headers: {
-        "Content-type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
-      .then((token) => {
-        localStorage.setItem("book-champions-token", token);
+    //onLogin();
+    loginUser(
+      email,
+      password,
+      (token) => {
+        handleUserLogin(token);
         navigate("/library");
-      })
-      .catch((err) => console.log(err));
+      },
+      (err) => {
+        errorToast(err.message);
+      }
+    );
   };
 
   return (

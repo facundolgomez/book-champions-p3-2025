@@ -8,15 +8,6 @@ import Register from "./components/auth/register/Register";
 
 import { useState } from "react";
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-  };
   return (
     <>
       <div className="d-flex flex-column align-items-center">
@@ -24,13 +15,16 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="login" />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route element={<Protected isSignedIn={loggedIn} />}>
+            <Route
+              path="/login"
+              element={<Login /*onLogin={handleLogin}*/ />}
+            />
+            <Route element={<Protected /*isSignedIn={loggedIn}*/ />}>
               <Route
                 path="/library/*"
                 element={
                   <>
-                    <Dashboard onLogout={handleLogout} />
+                    <Dashboard /*onLogout={handleLogout}*/ />
                     <ToastContainer />
                   </>
                 }
